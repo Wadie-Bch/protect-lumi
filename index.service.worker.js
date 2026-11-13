@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1794608641|6115801-pwa1794608715';
+const CACHE_VERSION = '1794613687|4920254-pwa1794613688';
 /** @type {string} */
 const CACHE_PREFIX = 'Protect Lumi-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
