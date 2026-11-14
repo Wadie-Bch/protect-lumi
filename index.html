@@ -94,7 +94,44 @@ body {
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
 <link rel="manifest" href="index.manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Protect Lumi"><meta name="theme-color" content="#0b1020"><meta name="mobile-web-app-capable" content="yes">
-	</head>
+	<script>
+window.BotyBridge = (function () {
+  var cfg = { provider: "mock", client: "", bannerSlot: "" };
+  function push(o) { (window.adsbygoogle = window.adsbygoogle || []).push(o); }
+  return {
+    provider: cfg.provider,
+    show: function (kind, cb) {
+      if (cfg.provider !== "h5") { cb("mock"); return; }
+      var done = false;
+      function fin(r) { if (!done) { done = true; cb(r); } }
+      if (kind === "rewarded") {
+        push({ type: "reward", name: "reward",
+          beforeReward: function (showAdFn) { showAdFn(); },
+          adDismissed: function () { fin("skip"); },
+          adViewed: function () { fin("ok"); },
+          adBreakDone: function (i) { fin(i && i.breakStatus === "viewed" ? "ok" : "skip"); } });
+      } else {
+        push({ type: "next", name: "between_runs", adBreakDone: function () { fin("ok"); } });
+      }
+    },
+    banner: function (on) {
+      if (cfg.provider !== "h5" || !cfg.bannerSlot) return;
+      var el = document.getElementById("boty-banner");
+      if (!el) {
+        el = document.createElement("div");
+        el.id = "boty-banner";
+        el.style.cssText = "position:fixed;left:0;right:0;bottom:0;height:13.9vw;z-index:10;text-align:center;background:#E9EDF5";
+        el.innerHTML = '<ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="'
+          + cfg.client + '" data-ad-slot="' + cfg.bannerSlot + '"></ins>';
+        document.body.appendChild(el);
+        push({});
+      }
+      el.style.display = on ? "block" : "none";
+    }
+  };
+})();
+</script>
+</head>
 	<body>
 		<canvas id="canvas">
 			Your browser does not support the canvas tag.
@@ -112,7 +149,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":14530888,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":15978820,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
